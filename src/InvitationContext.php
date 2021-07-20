@@ -19,6 +19,9 @@ class InvitationContext
     /** @var string */
     private $locale;
 
+    /** @var array */
+    private array $products = [];
+
     /**
      * @param string $businessUnitId
      * @param string $templateId
@@ -73,5 +76,21 @@ class InvitationContext
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProducts(): array
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param array $products
+     */
+    public function setProducts(array $products): void
+    {
+        $this->products = $products;
     }
 }
