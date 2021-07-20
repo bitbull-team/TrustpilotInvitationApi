@@ -63,20 +63,28 @@ class Client
         }
 
         $json = [
-            'recipientEmail' => $recipient->getEmail(),
-            'recipientName' => $recipient->getName(),
-            'referenceId' => $referenceId,
-            'templateId' => $context->getTemplateId(),
+            'consumerEmail' => $recipient->getEmail(),
+            'consumerName' => $recipient->getName(),
+            'referenceNumber' => $referenceId,
             'locale' => $context->getLocale(),
             'senderName' => $sender->getName(),
             'senderEmail' => $sender->getEmail(),
             'replyTo' => $sender->getReplyEmail(),
-            'preferredSendTime' => $time->format('c'),
-            'tags' => $context->getTags(),
-            'redirectUri' => $context->getRedirectUri(),
+            'serviceReviewInvitation' => [
+                'templateId' => $context->getTemplateId(),
+                'preferredSendTime' => $time->format('c'),
+                'tags' => $context->getTags(),
+                'redirectUri' => $context->getRedirectUri(),
+            ],
         ];
 
-        $url = 'private/business-units/' . $context->getBusinessUnitId() . '/invitations';
+        if ($context->getProducts()) {
+            $json['productReviewInvitation'] = [
+                'products' => $context->getProducts()
+            ];
+        }
+
+        $url = 'private/business-units/' . $context->getBusinessUnitId() . '/email-invitations';
 
         return $this->makeRequest($url, $json, [], $this->endpointInvitationApi);
     }
